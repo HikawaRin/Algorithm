@@ -65,9 +65,17 @@ class GA():
     self.cross_rate = cross_rate
     self.mutation = mutation
     self.func = func
+  
   # 解码DNA
   def translateDNA(self):
-    pass
+    W_vector = np.array([2**i for i in range(self.DNA_SIZE)]).reshape((self.DNA_SIZE, 1))[::-1]
+    binary_vector = self.POP.dot(W_vector).reshape(self.POP.shape[0:2])
+    for i in range(binary_vector.shape[0]):
+      for j in range(binary_vector.shape[1]):
+        binary_vector[i, j] /= ((2**self.DNA_SIZE) / self.var_len[j])
+        binary_vector[i, j] += self.bound[j][0]
+    return binary_vector
+  
   # 得到适应度
   def get_fitness(self, non_negative=False):
     pass
